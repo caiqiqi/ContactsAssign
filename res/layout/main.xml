@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TabHost
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@android:id/tabhost"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:layout_weight="1">
+	<!-- 呵呵，如果ImageView放到这里，就会和TabActivity一起显示 -->
+	
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="vertical">
+		<!-- 如果ImageView放到这里，就会先显示动画，等动画完了之后再显示TabActivity -->
+		<ImageView
+    android:id="@+id/Robert_Standard"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:src="@drawable/robert_standard"
+	android:visibility="invisible"/>
+		<TabWidget
+			android:id="@android:id/tabs"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"/>
+		<FrameLayout
+			android:id="@android:id/tabcontent"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent">
+			<!-- 定义第一个标签页的内容 -->
+			<RelativeLayout
+			  android:id="@+id/tab01"
+			  android:layout_width="match_parent"
+		      android:layout_height="match_parent"  
+		      android:orientation="vertical">
+		      <EditText 
+	android:id="@+id/inputNumber"
+	android:textColor="#0000FF"
+	android:focusable="false"
+    android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:textSize="40sp"
+	android:layout_marginLeft="0px"
+	android:layout_marginRight="0px"
+	android:padding="5dp"
+	android:layout_gravity="left"
+	android:background="#eee"/>
+<!-- 定义一个横跨3列的按钮 -->
+<Button 
+    android:layout_below="@id/inputNumber"
+    android:id="@+id/deleteButton"
+    android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:text="清除"/>
+<LinearLayout
+    android:id="@+id/bottomMenu"
+    android:layout_alignParentBottom="true"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+    <Button
+        android:id="@+id/switchButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"/>
+    <Button
+        android:id="@+id/callButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="拨号"
+        android:background="#00FF00"
+        android:layout_weight="1"/>
+    <Button
+        android:id="@+id/addButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="添加"
+        android:clickable="false"
+        android:layout_weight="1"/>
+    
+    </LinearLayout>
+			<GridView  
+	android:id="@+id/keyBoard"
+	android:layout_above="@id/bottomMenu"
+	android:layout_width="fill_parent" 
+	android:layout_height="wrap_content" 
+	android:horizontalSpacing="0pt"
+	android:verticalSpacing="0pt"
+	android:numColumns="3"
+	android:gravity="center"
+	android:columnWidth="240dp"/>
+			</RelativeLayout>
+			<!--  android:visibility="invisible"-->
+			<!-- 定义第二个标签页的内容 -->
+			<LinearLayout
+				android:id="@+id/tab02"
+				android:orientation="vertical"
+				android:layout_width="fill_parent"
+				android:layout_height="fill_parent">
+				<ListView 
+			    android:id="@+id/CallLogsList"
+			    android:layout_width="fill_parent"
+			    android:layout_height="wrap_content"
+			    android:clickable="true"
+			    android:focusable="true"
+			    />
+				
+			</LinearLayout>
+			<!-- 定义第三个标签页的内容 -->
+			<LinearLayout
+				android:id="@+id/tab03"
+				android:orientation="vertical"
+				android:layout_width="fill_parent"
+				android:layout_height="fill_parent">
+				<TextView
+				   android:layout_width="fill_parent"
+			       android:layout_height="wrap_content"
+			       android:text="所有拥有电话号码的联系人"
+			       android:textColor="#0000FF" />
+				<ListView 
+			    android:id="@+id/ContactsList"
+			    android:layout_width="fill_parent"
+			    android:layout_height="wrap_content"
+			    android:clickable="true"
+			    android:focusable="true"
+			    />
+			</LinearLayout>
+		</FrameLayout>
+	</LinearLayout>
+</TabHost>
