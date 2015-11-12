@@ -13,7 +13,6 @@ import java.util.Map;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Vibrator;
 import android.provider.CallLog;
 import android.provider.CallLog.Calls;
@@ -36,10 +35,8 @@ import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.Window;
 import android.widget.AdapterView.OnItemClickListener;
-//import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
-//import android.widget.AutoCompleteTextView.Validator;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -47,7 +44,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
-//import android.view.Menu;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
@@ -55,17 +51,18 @@ import android.provider.ContactsContract;
 
 @SuppressWarnings("deprecation")
 public class MainActivity extends TabActivity {
+	
 	ImageView robertImage;
-	EditText inputText=null;//ÊäÈëµç»°ºÅÂëµÄÏÔÊ¾¿ò
-	Button deleteButton=null;//É¾³ı
-	GridView keyBoardView=null;//¼üÅÌ
-	Button switchButton=null;//Õ¹¿ªÓëÊÕÆğ
-	Button callButton=null;//´òµç»°
-	Button addButton=null;//Ìí¼ÓÖÁÁªÏµÈË
+	EditText inputText=null;//è¾“å…¥ç”µè¯å·ç çš„æ˜¾ç¤ºæ¡†
+	Button deleteButton=null;//åˆ é™¤
+	GridView keyBoardView=null;//é”®ç›˜
+	Button switchButton=null;//å±•å¼€ä¸æ”¶èµ·
+	Button callButton=null;//æ‰“ç”µè¯
+	Button addButton=null;//æ·»åŠ è‡³è”ç³»äºº
 	Vibrator vibrator=null;
-	String[] number=null;//MapÖĞµÄÁªÏµÈËºÅÂë
-    int[] typeInt=null;//À´µç»òÈ¥µç¡£¡£¡£
-    String [] typeString=null;//Í¬ÉÏ
+	String[] number=null;//Mapä¸­çš„è”ç³»äººå·ç 
+    int[] typeInt=null;//æ¥ç”µæˆ–å»ç”µã€‚ã€‚ã€‚
+    String [] typeString=null;//åŒä¸Š
     String[] cachedName=null;
     String[] dateString=null;
     String[] duration=null;
@@ -85,23 +82,23 @@ public class MainActivity extends TabActivity {
  	Map<String,Object> listItem=null;
  	List<Map<String,Object>> listContacts=null;
  	Map<String,Object> listContact=null;
- 	int positionInList;//È«¾Ö±äÁ¿£¬ÓÃÀ´µÃµ½±»³¤°´µÄitemµÄposition
+ 	int positionInList;//å…¨å±€å˜é‡ï¼Œç”¨æ¥å¾—åˆ°è¢«é•¿æŒ‰çš„itemçš„position
  	long idInList;//
- 	SimpleAdapter callLogsListAdapter=null;//ÓëÍ¨»°¼ÇÂ¼ÏàÅä
- 	SimpleAdapter contactsListAdapter=null;//ÓëÁªÏµÈËÏàÅä
- 	ListView callLogsListView=null;//Í¨»°¼ÇÂ¼ListView
- 	ListView contactsListView=null;//ÁªÏµÈËListView
- 	int amountsOfName;//ContactsContract.Contacts._COUNT;//ÁªÏµÈËÊıÁ¿
- 	AudioManager audioManager=null;//ÓëÇé¾³Ä£Ê½Ïà¹Ø
+ 	SimpleAdapter callLogsListAdapter=null;//ä¸é€šè¯è®°å½•ç›¸é…
+ 	SimpleAdapter contactsListAdapter=null;//ä¸è”ç³»äººç›¸é…
+ 	ListView callLogsListView=null;//é€šè¯è®°å½•ListView
+ 	ListView contactsListView=null;//è”ç³»äººListView
+ 	int amountsOfName;//ContactsContract.Contacts._COUNT;//è”ç³»äººæ•°é‡
+ 	AudioManager audioManager=null;//ä¸æƒ…å¢ƒæ¨¡å¼ç›¸å…³
     //@SuppressLint("SimpleDateFormat") @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);//Õâ¸ö±ØĞëÔÚsetcontentviewÖ®Ç°£¬²»È»¾ÍÓĞ´í
+        requestWindowFeature(Window.FEATURE_NO_TITLE);//è¿™ä¸ªå¿…é¡»åœ¨setcontentviewä¹‹å‰ï¼Œä¸ç„¶å°±æœ‰é”™
         setContentView(R.layout.main);
         robertImage=(ImageView)findViewById(R.id.Robert_Standard);
 		robertImage.setVisibility(View.VISIBLE); 
 		AlphaAnimation alphaAnimation = new AlphaAnimation((float) 0.1, 1);   
-        alphaAnimation.setDuration(5000);//Éè¶¨¶¯»­Ê±¼ä   
+        alphaAnimation.setDuration(5000);//è®¾å®šåŠ¨ç”»æ—¶é—´   
         alphaAnimation.setAnimationListener(new AnimationListener() {   
             @Override  
             public void onAnimationStart(Animation animation) {   
@@ -120,44 +117,44 @@ public class MainActivity extends TabActivity {
         robertImage.setAnimation(alphaAnimation);  
         vibrator=(Vibrator)getSystemService(VIBRATOR_SERVICE);
         audioManager=(AudioManager)getSystemService(Context.AUDIO_SERVICE);
-        number=new String[100];//ºÅÂë
+        number=new String[100];//å·ç 
         typeInt=new int[100];
         typeString=new String[100];
         cachedName=new String[100];
         dateString=new String[100];
         duration=new String[100];
         TabHost tabHost=getTabHost();
-        TabSpec tab1=tabHost.newTabSpec("Tab1").setIndicator("²¦ºÅ").setContent(R.id.tab01);
-        TabSpec tab2=tabHost.newTabSpec("Tab2").setIndicator("Í¨»°¼ÇÂ¼").setContent(R.id.tab02);
-        TabSpec tab3=tabHost.newTabSpec("Tab3").setIndicator("Í¨Ñ¶Â¼").setContent(R.id.tab03);
+        TabSpec tab1=tabHost.newTabSpec("Tab1").setIndicator("æ‹¨å·").setContent(R.id.tab01);
+        TabSpec tab2=tabHost.newTabSpec("Tab2").setIndicator("é€šè¯è®°å½•").setContent(R.id.tab02);
+        TabSpec tab3=tabHost.newTabSpec("Tab3").setIndicator("é€šè®¯å½•").setContent(R.id.tab03);
         tabHost.addTab(tab1);
         tabHost.addTab(tab2);
         tabHost.addTab(tab3);
         listItems=new ArrayList<Map<String,Object>>();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Cursor cursor=getContentResolver().query(uri, projection, null, null, CallLog.Calls.DEFAULT_SORT_ORDER);
-        for (int i = 0; i < 100; i++) {//¶Ô£¬¾ÍÊÇÕâÀï²»ÄÜÊ¹cursor.getCount£¬»»³É100¾Í¿ÉÒÔÁË£¬Ã»ÓĞContactsÒÑÍ£Ö¹ÔËĞĞÊ²Ã´µÄ
+        for (int i = 0; i < 100; i++) {//å¯¹ï¼Œå°±æ˜¯è¿™é‡Œä¸èƒ½ä½¿cursor.getCountï¼Œæ¢æˆ100å°±å¯ä»¥äº†ï¼Œæ²¡æœ‰Contactså·²åœæ­¢è¿è¡Œä»€ä¹ˆçš„
             cursor.moveToPosition(i);
             dateString[i]=dateFormat.format(new Date(Long.parseLong(cursor.getString(cursor.getColumnIndexOrThrow(CallLog.Calls.DATE)))));//.toString();
             number[i] = cursor.getString(cursor.getColumnIndex(CallLog.Calls.NUMBER));
-            typeInt[i] = cursor.getInt(cursor.getColumnIndex(CallLog.Calls.TYPE));//¿ªÊ¼Ã»ÓĞtypeIntºÍtypeString£¬¿ªÊ¼Ö»ÄÜ°ÑintµÄÖµ¸³¸østring£¬³ö´í
+            typeInt[i] = cursor.getInt(cursor.getColumnIndex(CallLog.Calls.TYPE));//å¼€å§‹æ²¡æœ‰typeIntå’ŒtypeStringï¼Œå¼€å§‹åªèƒ½æŠŠintçš„å€¼èµ‹ç»™stringï¼Œå‡ºé”™
             switch(typeInt[i]){
-            case Calls.INCOMING_TYPE:typeString[i]="ÒÑ½Ó";break;//¿ªÊ¼Íü¼ÓbreakÓï¾äÁË
-            case Calls.OUTGOING_TYPE:typeString[i]="ÒÑ²¦";break;
-            case Calls.MISSED_TYPE:typeString[i]="Î´½Ó";break;
+            case Calls.INCOMING_TYPE:typeString[i]="å·²æ¥";break;//å¼€å§‹å¿˜åŠ breakè¯­å¥äº†
+            case Calls.OUTGOING_TYPE:typeString[i]="å·²æ‹¨";break;
+            case Calls.MISSED_TYPE:typeString[i]="æœªæ¥";break;
             }
             cachedName[i] = cursor.getString(cursor
-              .getColumnIndex(CallLog.Calls.CACHED_NAME));// »º´æµÄÃû³ÆÓëµç»°ºÅÂë£¬Èç¹ûËüµÄ´æÔÚ
-            duration[i]="Í¨»°Ê±³¤Îª£º"+cursor.getString(cursor
-                    .getColumnIndex(CallLog.Calls.DURATION))+"Ãë";
+              .getColumnIndex(CallLog.Calls.CACHED_NAME));// ç¼“å­˜çš„åç§°ä¸ç”µè¯å·ç ï¼Œå¦‚æœå®ƒçš„å­˜åœ¨
+            duration[i]="é€šè¯æ—¶é•¿ä¸ºï¼š"+cursor.getString(cursor
+                    .getColumnIndex(CallLog.Calls.DURATION))+"ç§’";
             
-            listItem=new HashMap<String,Object>();//ÕâMap»¹±ØĞë·ÅforÀïÍ·£¬Òª²»¾ÍÖµÏÔÊ¾Ò»ÏîÍ¨»°¼ÇÂ¼
+            listItem=new HashMap<String,Object>();//è¿™Mapè¿˜å¿…é¡»æ”¾foré‡Œå¤´ï¼Œè¦ä¸å°±å€¼æ˜¾ç¤ºä¸€é¡¹é€šè¯è®°å½•
             listItem.put("cachedName", cachedName[i]);
             listItem.put("number", number[i]);
             listItem.put("typeString", typeString[i]);
             listItem.put("duration", duration[i]);
             listItem.put("dateString", dateString[i]);
-            listItems.add(listItem);//ÕâÑù£¬Ã¿´ÎÖ´ĞĞforÑ­»·µ½½áÎ²µÄÊ±ºò¶¼´«ÈëÒ»¸öµÚi´ÎµÄHashMap£¬ÕâÑùArrayListÖĞ¾ÍÓĞ100¸öHashMapÁË¡£
+            listItems.add(listItem);//è¿™æ ·ï¼Œæ¯æ¬¡æ‰§è¡Œforå¾ªç¯åˆ°ç»“å°¾çš„æ—¶å€™éƒ½ä¼ å…¥ä¸€ä¸ªç¬¬iæ¬¡çš„HashMapï¼Œè¿™æ ·ArrayListä¸­å°±æœ‰100ä¸ªHashMapäº†ã€‚
         }
         cursor.close();
         callLogsListAdapter=new SimpleAdapter(MainActivity.this, listItems, R.layout.simple_item, new String[] {"cachedName", "number", "typeString", "duration", "dateString"},new int[] {R.id.cachedName,R.id.number,R.id.typeString,R.id.duration,R.id.dateString});
@@ -170,48 +167,48 @@ public class MainActivity extends TabActivity {
 					long id) {
 				// TODO Auto-generated method stub
 				Map<String,Object> selected=(Map<String,Object>)parent.getItemAtPosition(position);
-		         // String numberToCall=selected.getText().toString();//¿´ÕâÑùÖ±½Óselec.toString¿É²»¿ÉÒÔ£¬²»¿ÉÒÔµÄ»°ÏÈgetTextÔÙtoString¿©
-				//Map<String,Object> selected=listItems.get(position);//ÕâÀïµÄlistItemsÎªÊ²Ã´±ØĞëÒªÊÇfinalÄØ£¿
+		         // String numberToCall=selected.getText().toString();//çœ‹è¿™æ ·ç›´æ¥selec.toStringå¯ä¸å¯ä»¥ï¼Œä¸å¯ä»¥çš„è¯å…ˆgetTextå†toStringå’¯
+				//Map<String,Object> selected=listItems.get(position);//è¿™é‡Œçš„listItemsä¸ºä»€ä¹ˆå¿…é¡»è¦æ˜¯finalå‘¢ï¼Ÿ
 				String numberToCall=(String)selected.get("number");
 				Intent call=new Intent("android.intent.action.CALL",Uri.parse("tel:"+numberToCall));
 				MainActivity.this.startActivity(call);
 			}
         });
-        callLogsListView.setOnItemLongClickListener(new OnItemLongClickListener() {//ºÇºÇ£¬¿ªÊ¼ÎÒĞ´µÄÊÇOnLongClickListener£¬ÊÇËµÔõÃ´Ö»ÓĞÒ»¸ö²ÎÊıÄØ£¬ÈÃ ºÃÉú×Å¼±£¬ÓÖ²»ÄÜÖØĞ´·½·¨£¨Ôö¼ÓÒ»Ğ©²ÎÊı£©
+        callLogsListView.setOnItemLongClickListener(new OnItemLongClickListener() {//å‘µå‘µï¼Œå¼€å§‹æˆ‘å†™çš„æ˜¯OnLongClickListenerï¼Œæ˜¯è¯´æ€ä¹ˆåªæœ‰ä¸€ä¸ªå‚æ•°å‘¢ï¼Œè®© å¥½ç”Ÿç€æ€¥ï¼Œåˆä¸èƒ½é‡å†™æ–¹æ³•ï¼ˆå¢åŠ ä¸€äº›å‚æ•°ï¼‰
 
 			@Override
-			public boolean onItemLongClick(AdapterView<?> parent, View view,//Å¶£¬AdapterViewÊÇListViewµÄ¸¸Àà
+			public boolean onItemLongClick(AdapterView<?> parent, View view,//å“¦ï¼ŒAdapterViewæ˜¯ListViewçš„çˆ¶ç±»
 					int position, long id) {
 				// TODO Auto-generated method stub
-				//whoUChose=cachedName[position];//ÕâĞ©¶¼ÊÇMapÖĞĞÎ³ÉºÃµÄÓĞË³ĞòµÄÊı¾İ£¬²»ÊÇ¶¯Ì¬µÄ
-				//numberUChose=number[position];//ÕâĞ©¶¼ÊÇMapÖĞĞÎ³ÉºÃµÄÓĞË³ĞòµÄÊı¾İ£¬²»ÊÇ¶¯Ì¬µÄ
+				//whoUChose=cachedName[position];//è¿™äº›éƒ½æ˜¯Mapä¸­å½¢æˆå¥½çš„æœ‰é¡ºåºçš„æ•°æ®ï¼Œä¸æ˜¯åŠ¨æ€çš„
+				//numberUChose=number[position];//è¿™äº›éƒ½æ˜¯Mapä¸­å½¢æˆå¥½çš„æœ‰é¡ºåºçš„æ•°æ®ï¼Œä¸æ˜¯åŠ¨æ€çš„
 				positionInList=position;
 				idInList=id;
-				//listAdapter.getItem(position);//Å¶£¬adapter»¹ÊÇ±ğ¸ÄÁË£¬Ö±½Ó¸Älistview°É
-				Map<String,Object> selected=(Map<String,Object>)parent.getItemAtPosition(position);//¶÷ÕâÑù¾Í¶ÔÁË£¬µÃµÃµ½Ò»¸öĞÂµÄMap
+				//listAdapter.getItem(position);//å“¦ï¼Œadapterè¿˜æ˜¯åˆ«æ”¹äº†ï¼Œç›´æ¥æ”¹listviewå§
+				Map<String,Object> selected=(Map<String,Object>)parent.getItemAtPosition(position);//æ©è¿™æ ·å°±å¯¹äº†ï¼Œå¾—å¾—åˆ°ä¸€ä¸ªæ–°çš„Map
 				whoUChose=(String)selected.get("cachedName");
 				numberUChose=(String)selected.get("number");
 		            AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this);
-		            final  String[] whatToDo=new String[]{"·¢ËÍ¶ÌĞÅ","É¾³ı¸ÃÏî¼ÇÂ¼"};//ÕâÀïÊÇ·½·¨ÀïÃæ£¬ºÃÏñ²»ÄÜÓÃprivateĞŞÊÎ£¿
-		            //ÉèÖÃ¶Ô»°¿òµÄ±êÌâ
-		            builder.setTitle(whoUChose);//×îºÃ¸Ä³Éµã»÷ÏîµÄÈËÃû
-		            //Ìí¼Ó°´Å¥£¬android.content.DialogInterface.OnClickListener.OnClickListener
+		            final  String[] whatToDo=new String[]{"å‘é€çŸ­ä¿¡","åˆ é™¤è¯¥é¡¹è®°å½•"};//è¿™é‡Œæ˜¯æ–¹æ³•é‡Œé¢ï¼Œå¥½åƒä¸èƒ½ç”¨privateä¿®é¥°ï¼Ÿ
+		            //è®¾ç½®å¯¹è¯æ¡†çš„æ ‡é¢˜
+		            builder.setTitle(whoUChose);//æœ€å¥½æ”¹æˆç‚¹å‡»é¡¹çš„äººå
+		            //æ·»åŠ æŒ‰é’®ï¼Œandroid.content.DialogInterface.OnClickListener.OnClickListener
 		            builder.setItems(whatToDo, new DialogInterface.OnClickListener() {
 						
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							// TODO Auto-generated method stub
-							if(whatToDo[0]==whatToDo[which]){//·¢ËÍ¶ÌĞÅ
+							if(whatToDo[0]==whatToDo[which]){//å‘é€çŸ­ä¿¡
 								Uri smsToUri = Uri.parse("smsto:"+numberUChose);    
 							    Intent Intent = new Intent( android.content.Intent.ACTION_SENDTO, smsToUri );
 							    startActivity(Intent);
-							}else if(whatToDo[1]==whatToDo[which]){//É¾³ı¸ÃÏî¼ÇÂ¼
-								listItems.remove(positionInList);//ÏÂÒ»ĞĞÓ¦¸ÃÔÚÒ»¸öĞÂÏß³ÌÖĞÔËĞĞ?
-								//È±µã£ºÕâÑùÖ»ÊÇÉ¾³ıListViewÖĞµÄ£¬¶ø²»ÊÇÊı¾İ¿âÖĞµÄ
-								//É¾³ıÔÚÊı¾İ¿âÖĞµÄ¼ÇÂ¼£¬ÕâÑùActivityÔÚÏÂ´Îµ÷ÓÃµÄÊ±ºò¾Í²»»áÔÙÏÔÊ¾É¾³ı¹ıµÄÄÚÈİÁË
-								MainActivity.this.getContentResolver().delete(uri, "_id=?", new String[]{idInList+""});//ÒÀÈ»É¾²»µôÊı¾İ¿âÖĞµÄÊı¾İ¡£¡£¡£ÄÑµÀÖ»ÓĞÏµÍ³×Ô´øµÄ³ÌĞòÄÜÉ¾£¿
-								callLogsListAdapter.notifyDataSetChanged();//¸Õ²ÅÒ²ÑéÖ¤ÁË£¬µ±ÎÒ°ÑSimpleAdapter·ÅÔÚonCreateÄÚ¶¨ÒåÊ±£¬eclipse¸ù±¾¾ÍÃ»ÓĞlistAdapterµÄÌáÊ¾£¬·ÅÔÚonCreateÖ®Íâ¶¨ÒåÕâ²ÅÓĞµÄ,ÁíÍâ£¬¼ÓÉÏÕâ¾äºó£¬Ô­ÏÈ³öÏÖµÄANR¾Í²»¼ûÁË£¬¶øÇÒ¸üĞÂµÄºÜ¿ì£¬¿´¿´ÏÂÃæÄÇ¾äÓĞÊ²Ã´Ğ§¹û
-								callLogsListView.invalidate();//ÔÚUIÏß³ÌÀïµ÷ÓÃ(main threadÒ²½ĞUI threadÒ²¼´UIÏß³Ì¡£)
+							}else if(whatToDo[1]==whatToDo[which]){//åˆ é™¤è¯¥é¡¹è®°å½•
+								listItems.remove(positionInList);//ä¸‹ä¸€è¡Œåº”è¯¥åœ¨ä¸€ä¸ªæ–°çº¿ç¨‹ä¸­è¿è¡Œ?
+								//ç¼ºç‚¹ï¼šè¿™æ ·åªæ˜¯åˆ é™¤ListViewä¸­çš„ï¼Œè€Œä¸æ˜¯æ•°æ®åº“ä¸­çš„
+								//åˆ é™¤åœ¨æ•°æ®åº“ä¸­çš„è®°å½•ï¼Œè¿™æ ·Activityåœ¨ä¸‹æ¬¡è°ƒç”¨çš„æ—¶å€™å°±ä¸ä¼šå†æ˜¾ç¤ºåˆ é™¤è¿‡çš„å†…å®¹äº†
+								MainActivity.this.getContentResolver().delete(uri, "_id=?", new String[]{idInList+""});//ä¾ç„¶åˆ ä¸æ‰æ•°æ®åº“ä¸­çš„æ•°æ®ã€‚ã€‚ã€‚éš¾é“åªæœ‰ç³»ç»Ÿè‡ªå¸¦çš„ç¨‹åºèƒ½åˆ ï¼Ÿ
+								callLogsListAdapter.notifyDataSetChanged();//åˆšæ‰ä¹ŸéªŒè¯äº†ï¼Œå½“æˆ‘æŠŠSimpleAdapteræ”¾åœ¨onCreateå†…å®šä¹‰æ—¶ï¼Œeclipseæ ¹æœ¬å°±æ²¡æœ‰listAdapterçš„æç¤ºï¼Œæ”¾åœ¨onCreateä¹‹å¤–å®šä¹‰è¿™æ‰æœ‰çš„,å¦å¤–ï¼ŒåŠ ä¸Šè¿™å¥åï¼ŒåŸå…ˆå‡ºç°çš„ANRå°±ä¸è§äº†ï¼Œè€Œä¸”æ›´æ–°çš„å¾ˆå¿«ï¼Œçœ‹çœ‹ä¸‹é¢é‚£å¥æœ‰ä»€ä¹ˆæ•ˆæœ
+								callLogsListView.invalidate();//åœ¨UIçº¿ç¨‹é‡Œè°ƒç”¨(main threadä¹Ÿå«UI threadä¹Ÿå³UIçº¿ç¨‹ã€‚)
 							}
 						}
 		            });
@@ -228,8 +225,8 @@ public class MainActivity extends TabActivity {
         	Items.add(Item);
         }
         SimpleAdapter textAdapter=new SimpleAdapter(this, Items, R.layout.text_item, new String[]{"keyBoardNumber"}, new int[]{R.id.keyBoardNumber});
-        inputText=(EditText)findViewById(R.id.inputNumber);//ÏÔÊ¾¿ò
-        deleteButton=(Button)findViewById(R.id.deleteButton);//É¾³ı°´Å¥
+        inputText=(EditText)findViewById(R.id.inputNumber);//æ˜¾ç¤ºæ¡†
+        deleteButton=(Button)findViewById(R.id.deleteButton);//åˆ é™¤æŒ‰é’®
         deleteButton.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -240,7 +237,7 @@ public class MainActivity extends TabActivity {
 					return;
 				}
 				else{
-				inputText.setText(result.substring(0, result.length()-1)) ;//µÃµ½¶ÔÏóstringµÄ×Óstring
+				inputText.setText(result.substring(0, result.length()-1)) ;//å¾—åˆ°å¯¹è±¡stringçš„å­string
 				}
 			}
 		});
@@ -257,8 +254,8 @@ public class MainActivity extends TabActivity {
 				return false;
 			}
 		});
-        keyBoardView=(GridView)findViewById(R.id.keyBoard);//²¦ºÅ¼üÅÌµÄÍø¸ñÊÓÍ¼
-        keyBoardView.setAdapter(textAdapter);//²ÎÊıÉÏ²»ÊÇËµ±ØĞëÊÇListAdapterÂğ£¬ÔõÃ´SimpleAdapterÒ²ĞĞ
+        keyBoardView=(GridView)findViewById(R.id.keyBoard);//æ‹¨å·é”®ç›˜çš„ç½‘æ ¼è§†å›¾
+        keyBoardView.setAdapter(textAdapter);//å‚æ•°ä¸Šä¸æ˜¯è¯´å¿…é¡»æ˜¯ListAdapterå—ï¼Œæ€ä¹ˆSimpleAdapterä¹Ÿè¡Œ
         keyBoardView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -270,23 +267,23 @@ public class MainActivity extends TabActivity {
 					vibrator.vibrate(30);
 		        }
 				inputText.append(keyBoardNumber[position]);
-				//inputText.setText(inputText.getText()+keyBoardNumber[position]);//¹ş¹şÕâ¾äÊÇÎÒÃÉµÄ
+				//inputText.setText(inputText.getText()+keyBoardNumber[position]);//å“ˆå“ˆè¿™å¥æ˜¯æˆ‘è’™çš„
 			}
         	
 		});
         switchButton=(Button)findViewById(R.id.switchButton);
-        switchButton.setText("ÊÕÆğ");
+        switchButton.setText("æ”¶èµ·");
         switchButton.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				if(switchButton.getText()=="ÊÕÆğ"){
+				if(switchButton.getText()=="æ”¶èµ·"){
 				keyBoardView.setVisibility(View.INVISIBLE);
-				switchButton.setText("Õ¹¿ª");
-				}else if(switchButton.getText()=="Õ¹¿ª"){
+				switchButton.setText("å±•å¼€");
+				}else if(switchButton.getText()=="å±•å¼€"){
 					keyBoardView.setVisibility(View.VISIBLE);
-					switchButton.setText("ÊÕÆğ");
+					switchButton.setText("æ”¶èµ·");
 				}
 			}
 		});
@@ -296,7 +293,7 @@ public class MainActivity extends TabActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				String numberToCall=inputText.getText().toString();//Èç¹ûÃ»ÓĞ»á·µ»ØÒ»¸öÊ²Ã´ÀàĞÍ£¿
+				String numberToCall=inputText.getText().toString();//å¦‚æœæ²¡æœ‰ä¼šè¿”å›ä¸€ä¸ªä»€ä¹ˆç±»å‹ï¼Ÿ
 				if(!isEmpty(numberToCall)){
 				//if(numberToCall!=null){
 				Intent callIntent=new Intent("android.intent.action.CALL", Uri.parse("tel:"+numberToCall));
@@ -305,7 +302,7 @@ public class MainActivity extends TabActivity {
 			}
 		});
         addButton=(Button)findViewById(R.id.addButton);
-        //¹ØÓÚÍ¨Ñ¶Â¼µÄ
+        //å…³äºé€šè®¯å½•çš„
         contactsListView=(ListView)findViewById(R.id.ContactsList);
         Cursor cursorContacts=getContentResolver().query(Phone.CONTENT_URI, PHONES_PROJECTION, null, null, Phone.DISPLAY_NAME + " COLLATE LOCALIZED ASC");
         amountsOfName=MainActivity.this.getContactCount(MainActivity.this);
@@ -314,7 +311,7 @@ public class MainActivity extends TabActivity {
         listContacts=new ArrayList<Map<String,Object>>();
         if(cursorContacts.moveToFirst()){
         for(int i=0;i<amountsOfName;i++){
-        	cursorContacts.moveToPosition(i);//Éµ±Æ£¬¿ªÊ¼Õâ¾äºó¶¼²»¼Ó£¡£¡£¡
+        	cursorContacts.moveToPosition(i);//å‚»é€¼ï¼Œå¼€å§‹è¿™å¥åéƒ½ä¸åŠ ï¼ï¼ï¼
         	nameInContacts[i]=cursorContacts.getString(cursorContacts.getColumnIndexOrThrow(Phone.DISPLAY_NAME));
         	numberInContacts[i] = cursorContacts.getString(cursorContacts.getColumnIndexOrThrow(Phone.NUMBER));
         	listContact=new HashMap<String, Object>();
@@ -343,8 +340,8 @@ public class MainActivity extends TabActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
     	// TODO Auto-generated method stub
-    	menu.add(0, OUT, 0, "µ¼³ö");
-    	menu.add(0, EXIT, 0, "ÍË³ö");
+    	menu.add(0, OUT, 0, "å¯¼å‡º");
+    	menu.add(0, EXIT, 0, "é€€å‡º");
     	return super.onCreateOptionsMenu(menu);
     }
     @Override
@@ -352,9 +349,9 @@ public class MainActivity extends TabActivity {
     	// TODO Auto-generated method stub
     	switch(item.getItemId()){
     	case OUT: 
-    		/*String[] items=new String[]{"ÄÚ²¿´æ´¢","SD¿¨"};
+    		/*String[] items=new String[]{"å†…éƒ¨å­˜å‚¨","SDå¡"};
     		AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this);
-    		builder.setTitle("Ñ¡Ôñµ¼³öÂ·¾¶");
+    		builder.setTitle("é€‰æ‹©å¯¼å‡ºè·¯å¾„");
     		builder.setItems(items, new DialogInterface.OnClickListener() {
 						
 						@Override
@@ -363,7 +360,7 @@ public class MainActivity extends TabActivity {
 							
 						}
 					});
-					*///ÄÜÑ¡Ôñµ¼³öÂ·¾¶µÄ¹¦ÄÜ»¹Ã»ÊµÏÖ
+					*///èƒ½é€‰æ‹©å¯¼å‡ºè·¯å¾„çš„åŠŸèƒ½è¿˜æ²¡å®ç°
     		
     		Thread newThread;
     		newThread=new Thread(new Runnable() {
@@ -386,9 +383,9 @@ public class MainActivity extends TabActivity {
     	    			byte[] data = new byte[1024 * 1];
     	    			while(cur.moveToNext()){
     	    				String lookupKey = cur.getString(index);
-    	    				Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_VCARD_URI, lookupKey);//ÔÚÒÑÓĞµÄbaseUriÉÏ¼ÓÈëpath(lookupkeyµÄUriµÃµ½Ò»¸öĞÂµÄUri)
+    	    				Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_VCARD_URI, lookupKey);//åœ¨å·²æœ‰çš„baseUriä¸ŠåŠ å…¥path(lookupkeyçš„Uriå¾—åˆ°ä¸€ä¸ªæ–°çš„Uri)
     	    		
-    	    				AssetFileDescriptor fd = MainActivity.this.getContentResolver().openAssetFileDescriptor(uri, "r");//r±íÊ¾read-only access;w ±íÊ¾write-only access;
+    	    				AssetFileDescriptor fd = MainActivity.this.getContentResolver().openAssetFileDescriptor(uri, "r");//rè¡¨ç¤ºread-only access;w è¡¨ç¤ºwrite-only access;
     	    				FileInputStream fin = fd.createInputStream();
     	    				int len = -1;
     	    				while((len = fin.read(data)) != -1){
@@ -397,15 +394,15 @@ public class MainActivity extends TabActivity {
     	    				fin.close();
     	    			}
     	    			fout.close();
-    	    			//Toast.makeText(MainActivity.this,"µ¼³ö³É¹¦" , Toast.LENGTH_LONG).show();
+    	    			//Toast.makeText(MainActivity.this,"å¯¼å‡ºæˆåŠŸ" , Toast.LENGTH_LONG).show();
     	    			} catch (Exception e) {
     	    				e.printStackTrace();
     	    			}
 					}
 				});
     			newThread.start();
-    		if(true){//»¹Ã»ÏëºÃÅĞ¶ÏÓï¾äÊÇÊ²Ã´¡£¡£¡£
-    			Toast.makeText(MainActivity.this,"µ¼³ö³É¹¦" , Toast.LENGTH_LONG).show();
+    		if(true){//è¿˜æ²¡æƒ³å¥½åˆ¤æ–­è¯­å¥æ˜¯ä»€ä¹ˆã€‚ã€‚ã€‚
+    			Toast.makeText(MainActivity.this,"å¯¼å‡ºæˆåŠŸ" , Toast.LENGTH_LONG).show();
     		}
     			break;
     		case EXIT: 
@@ -416,7 +413,7 @@ public class MainActivity extends TabActivity {
     }
     private boolean isEmpty(String str){
     	
-    	    return (str==null || str.trim().length()==0);//Ã»ÓĞ»òÕßÎª¿Õ
+    	    return (str==null || str.trim().length()==0);//æ²¡æœ‰æˆ–è€…ä¸ºç©º
     	}
     private int getContactCount(Context context){   
         Cursor c=context.getContentResolver().query(ContactsContract.Contacts.CONTENT_URI, new String[]{ContactsContract.Contacts._COUNT}, null, null, null);   
